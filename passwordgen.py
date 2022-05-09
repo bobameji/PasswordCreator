@@ -93,7 +93,8 @@ def generatePassword(numWords):
     
 
 finalPass = generatePassword(int(input("How many words? ")))
-print(finalPass)    
+print(finalPass)
+input("Press [Enter] to continue...")  
 
 
 
