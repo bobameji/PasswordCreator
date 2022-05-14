@@ -5,13 +5,15 @@ Written by Robert Alfrey
 """
 
 import secrets as s
-
+import argparse as ap
+import pyperclip
 
 def randNumPicker(numStrings):
     #Generate numStrings amount of numbers
+    wordsMax = 236736
     numList = []
     for i in range(numStrings):
-        numList.append(s.randbelow(236736))
+        numList.append(s.randbelow(wordsMax))
     return numList
     
 def getLines(words, numList):
@@ -60,42 +62,94 @@ def addSpecialCharacters(strList):
     return listWithSpecialChars
 
     
-def generatePassword(numWords):
-    #Generates a password using the functions above, also allows varaiability in the password type
-    password = []
-    doCapitalize = str(input("Do you want capitial letters? (y)/n: "))
-    if doCapitalize == "n":
-        password = wordPicker(randNumPicker(numWords))
-    else:
-        password = (capitilizeRandomLetters(wordPicker(randNumPicker(numWords))))
+# def generatePassword(numWords):
+#     #Generates a password using the functions above, also allows varaiability in the password type
+#     password = []
+#     doCapitalize = str(input("Do you want capitial letters? (y)/n: "))
+#     if doCapitalize == "n":
+#         password = wordPicker(randNumPicker(numWords))
+#     else:
+#         password = (capitilizeRandomLetters(wordPicker(randNumPicker(numWords))))
 
     
-    specialChars = str(input("Do you want special characters? (y)/n: "))
-    if specialChars == "n":
+#     specialChars = str(input("Do you want special characters? (y)/n: "))
+#     if specialChars == "n":
 
-        pass
-    else:
-        password = addSpecialCharacters(password)
+#         pass
+#     else:
+#         password = addSpecialCharacters(password)
       
-    returnPhrase = "".join(password)
+#     returnPhrase = "".join(password)
        
-    withNumbers = str(input("Do you want numbers on the end? (y)/n: "))
-    if withNumbers == "n":
-        pass
+#     withNumbers = str(input("Do you want numbers on the end? (y)/n: "))
+#     if withNumbers == "n":
+#         pass
+#     else:
+#         numMax = 999999
+#         number = s.randbelow(numMax)
+#         returnPhrase = returnPhrase + str(number)
+#
+#        
+#
+#    return returnPhrase
+
+parser = ap.ArgumentParser()
+parser.add_argument('-w', '--words', dest="words", metavar="words", type=int, required=True,
+                    help ="The number of words in the password")
+parser.add_argument('-n', '--numbers', dest="numbers", metavar="numbers", type=str, default="y",
+                    help="Adds numbers to the end of the password y for yes, n for no. Defaults to y")
+parser.add_argument('-u', '--uppercase', type=str, dest="caps", metavar="Uppercase", default="y",
+                    help="Adds capital letters y for yes, n for no. Defaults to y")
+parser.add_argument('-s', '--specials', type=str, dest="specials", metavar="specials", default="y",
+                    help="Adds special characters to the password y for yes, n for no. Defaults to y")
+parser.add_argument('-c', '--copy', type=str, dest="copy", metavar="copy", default="n",
+                    help="Allows copying to clipboard y for yes, n for no. Defaults to n")
+
+args = parser.parse_args()
+
+def generatePassword():
+    password = []
+    numWords = args.words
+    if args.caps == "n":
+        password = wordPicker(randNumPicker(numWords))
+    elif args.caps == "y":
+        password = (capitilizeRandomLetters(wordPicker(randNumPicker(numWords))))
     else:
-        number = s.randbelow(999999)
-        returnPhrase = returnPhrase + str(number)
-
+        print("Invalid argument in --caps, please enter in y or n format")
+        quit()
         
-
+    if args.specials == "n":
+        pass
+    elif args.specials == "y":
+        password = addSpecialCharacters(password)
+    else:
+        print("Invalid argument in --specials, please enter in y or n format")
+        quit()
+    returnPhrase = "".join(password)
+    
+    if args.numbers == "n":
+        pass
+    elif args.numbers == "y":
+        numMax = 999999
+        number = s.randbelow(numMax)
+        returnPhrase = returnPhrase + str(number)
+    else:
+        print("Invalid argument in --numbers, please enter in y or n format")
+        quit()
+    
     return returnPhrase
-    
-    
 
-finalPass = generatePassword(int(input("How many words? ")))
-print(finalPass)
-input("Press [Enter] to continue...")  
 
+
+finalPassword = generatePassword()
+if args.copy == "y":    
+    pyperclip.copy(finalPassword)
+    print("Password is copied to clipboard!")
+elif args.copy == "n":
+    pass
+else:
+    print("Invalid argumenht in --copy, please enter in y or n format")
+print(finalPassword)
 
 
 
