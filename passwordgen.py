@@ -10,7 +10,7 @@ import pyperclip
 
 def randNumPicker(numStrings):
     #Generate numStrings amount of numbers
-    wordsMax = 236736
+    wordsMax = 236730
     numList = []
     for i in range(numStrings):
         numList.append(s.randbelow(wordsMax))
@@ -61,37 +61,6 @@ def addSpecialCharacters(strList):
         listWithSpecialChars.append(i)
     return listWithSpecialChars
 
-    
-# def generatePassword(numWords):
-#     #Generates a password using the functions above, also allows varaiability in the password type
-#     password = []
-#     doCapitalize = str(input("Do you want capitial letters? (y)/n: "))
-#     if doCapitalize == "n":
-#         password = wordPicker(randNumPicker(numWords))
-#     else:
-#         password = (capitilizeRandomLetters(wordPicker(randNumPicker(numWords))))
-
-    
-#     specialChars = str(input("Do you want special characters? (y)/n: "))
-#     if specialChars == "n":
-
-#         pass
-#     else:
-#         password = addSpecialCharacters(password)
-      
-#     returnPhrase = "".join(password)
-       
-#     withNumbers = str(input("Do you want numbers on the end? (y)/n: "))
-#     if withNumbers == "n":
-#         pass
-#     else:
-#         numMax = 999999
-#         number = s.randbelow(numMax)
-#         returnPhrase = returnPhrase + str(number)
-#
-#        
-#
-#    return returnPhrase
 
 parser = ap.ArgumentParser()
 parser.add_argument('-w', '--words', dest="words", metavar="words", type=int, required=True,
